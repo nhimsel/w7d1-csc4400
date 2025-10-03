@@ -1,6 +1,10 @@
 class Main {
     public static void main(String[] args) {
-            
+        int[] arr = RandomizedArray(10, -5, 10); 
+        printArr(arr);
+        Sort.Shell(arr, new int[] {5,3,1});
+        printArr(arr);
+        System.out.println("sorted:"+ checkSort(arr));
     }
 
     private static int[] RandomizedArray(int size, int start, int end) {
@@ -37,15 +41,9 @@ class Main {
         System.out.println();
     }
 
-    private static boolean checkSort(int[] arr, boolean ascending) {
-        if (ascending) {
-            for (int i=1; i<arr.length; i++)
-                if (arr[i-1] > arr[i]) return false;
-        }
-        else{
-            for (int i=1; i<arr.length; i++)
-                if (arr[i-1] < arr[i]) return false;
-        }
+    private static boolean checkSort(int[] arr) {
+        for (int i=1; i<arr.length; i++)
+            if (arr[i-1] > arr[i]) return false;
         return true;
     }
 
@@ -53,9 +51,47 @@ class Main {
 
 class Sort {
     static int[] Shell(int[] arr, int[] intervals) {
+        //check that the intervals are legal
+        if (intervals[intervals.length-1]!=1) {
+            System.out.println("the intervals do not end in 1. bailing");
+            return arr;
+        }
+        else {
+            for (int i=0; i<intervals.length-1; i++) {
+                if (intervals[i]<=intervals[i+1]) {
+                    System.out.println("the intervals are not in descending order. bailing");
+                    return arr;
+                }
+            }
+        }
+
+        //loop through all intervals
+        for (int i=0; i<intervals.length; i++) {
+            int offset = 0;
+            while (offset < intervals[i]) {
+                // make the temp arr
+                int tmpsize = arr.length / intervals[i];
+                //adjust size if there is one more possible value
+                if ((arr.length)>tmpsize*intervals[i]+offset) tmpsize++; 
+                int[] tmp = new int[tmpsize];
+                //fill tmp
+                for (int j=0; j<tmpsize; j++) {
+                    tmp[j]=arr[intervals[i]*j+offset];
+                }
+                //sort the tmp arr
+                Insertion(tmp);
+                //fill the sorted vals back into arr
+                for (int j=0; j<tmpsize; j++) {
+                    arr[intervals[i]*j+offset]=tmp[j];
+                }
+                offset++;
+            }
+        }
+        return arr;
     }
 
     static int[] Shell(int[] arr) {
+        return arr;
     }
 
     static int[] Insertion(int[] arr) {
