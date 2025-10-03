@@ -1,9 +1,26 @@
 class Main {
     public static void main(String[] args) {
-        int[] arr = RandomizedArray(100000, -500000, 1000000); 
-        //Sort.Shell(arr, new int[] {5,3,1});
-        Sort.Shell(arr);
-        System.out.println("sorted:"+ checkSort(arr));
+        int arrsize = 100000;
+        int[] arr = RandomizedArray(arrsize, -500000, 1000000); 
+
+        int[] shellarr = arr.clone();
+        int[] insarr = arr.clone();
+
+        long insstart = System.currentTimeMillis();
+        Sort.Insertion(insarr);
+        long insfin = System.currentTimeMillis();
+
+        long instime = insfin-insstart;
+        System.out.println("algorithm: insertion\ttime: "+instime+"ms\tarrayzie:"+arrsize);
+        System.out.println("the array was sorted correctly:"+checkSort(insarr));
+
+        long shellstart = System.currentTimeMillis();
+        Sort.Shell(shellarr);
+        long shellfin = System.currentTimeMillis();
+
+        long shelltime = shellfin-shellstart;
+        System.out.println("algorithm: shell\ttime: "+shelltime+"ms\tarraysize:"+arrsize);
+        System.out.println("the array was sorted correctly:"+checkSort(shellarr));
     }
 
     private static int[] RandomizedArray(int size, int start, int end) {
