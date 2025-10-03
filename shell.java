@@ -1,9 +1,8 @@
 class Main {
     public static void main(String[] args) {
-        int[] arr = RandomizedArray(10, -5, 10); 
-        printArr(arr);
-        Sort.Shell(arr, new int[] {5,3,1});
-        printArr(arr);
+        int[] arr = RandomizedArray(100000, -500000, 1000000); 
+        //Sort.Shell(arr, new int[] {5,3,1});
+        Sort.Shell(arr);
         System.out.println("sorted:"+ checkSort(arr));
     }
 
@@ -32,13 +31,6 @@ class Main {
             result[i] = arr[i];
         }
         return result;
-    }
-
-    private static void printArr(int[] arr) {
-        for (int i:arr) {
-            System.out.print(i+"//");
-        }
-        System.out.println();
     }
 
     private static boolean checkSort(int[] arr) {
@@ -75,15 +67,13 @@ class Sort {
                 if ((arr.length)>tmpsize*intervals[i]+offset) tmpsize++; 
                 int[] tmp = new int[tmpsize];
                 //fill tmp
-                for (int j=0; j<tmpsize; j++) {
+                for (int j=0; j<tmpsize; j++)
                     tmp[j]=arr[intervals[i]*j+offset];
-                }
                 //sort the tmp arr
                 Insertion(tmp);
                 //fill the sorted vals back into arr
-                for (int j=0; j<tmpsize; j++) {
+                for (int j=0; j<tmpsize; j++)
                     arr[intervals[i]*j+offset]=tmp[j];
-                }
                 offset++;
             }
         }
@@ -91,6 +81,15 @@ class Sort {
     }
 
     static int[] Shell(int[] arr) {
+        int n = 0; 
+        //determine max interval
+        while (Math.pow(2.0, (double)++n)<arr.length);
+        int[] intervals = new int[n--];
+        //fill interval arr
+        for (int i=0; i<=n; i++)
+            intervals[i]=(int)Math.pow(2.0,(double)(n-i));
+        //shell sort with the intervals
+        Shell(arr, intervals);
         return arr;
     }
 
