@@ -4,15 +4,6 @@ class Main {
         int[] arr = RandomizedArray(arrsize, -500000, 1000000); 
 
         int[] shellarr = arr.clone();
-        int[] insarr = arr.clone();
-
-        long insstart = System.currentTimeMillis();
-        Sort.Insertion(insarr);
-        long insfin = System.currentTimeMillis();
-
-        long instime = insfin-insstart;
-        System.out.println("algorithm: insertion\ttime: "+instime+"ms\tarrayzie:"+arrsize);
-        System.out.println("the array was sorted correctly:"+checkSort(insarr));
 
         long shellstart = System.currentTimeMillis();
         Sort.Shell(shellarr);
