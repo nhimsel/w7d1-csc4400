@@ -59,19 +59,24 @@ class Main {
 
 class Sort {
     static void Quick(int[] arr, int lo, int hi) {
+        //don't run if only 1 value
         if (hi<=lo)
             return;
 
         int olo=lo,ohi=hi;
         int piv = arr[lo];
         while (lo<=hi) {
-            while (lo<=hi && arr[lo]<piv) 
+            while (arr[lo]<piv) 
+                //while val lower than piv, increase lo
                 lo++;
-            while (lo<=hi && arr[hi]>piv)
+            while (arr[hi]>piv)
+                //while val higher than piv, lower hi
                 hi--;
             if(lo>hi)
+                //we've checked the whole arr
                 break;
             else{
+                //swap
                 int tmp=arr[lo];
                 arr[lo]=arr[hi];
                 arr[hi]=tmp;
@@ -79,11 +84,13 @@ class Sort {
                 hi--;
             }
         }
+        //call recursively on each partition
         Quick(arr,olo,hi);
         Quick(arr,lo,ohi);
         return;
     }
 
+    //makes life a bit easier. quicksorts whole arr
     static int[] Quick(int[] arr) {
         Quick(arr, 0, arr.length-1);
         return arr;
