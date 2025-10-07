@@ -3,7 +3,16 @@ class Main {
         int arrsize = 100000;
         int[] arr = RandomizedArray(arrsize, -500000, 1000000); 
 
+        int[] quickarr = arr.clone();
         int[] shellarr = arr.clone();
+        
+        long quickstart = System.currentTimeMillis();
+        Sort.Quick(quickarr);
+        long quickfin = System.currentTimeMillis();
+
+        long quicktime = quickfin-quickstart;
+        System.out.println("algorithm: quick\ttime: "+quicktime+"ms\tarraysize:"+arrsize);
+        System.out.println("the array was sorted correctly:"+checkSort(quickarr));
 
         long shellstart = System.currentTimeMillis();
         Sort.Shell(shellarr);
@@ -46,10 +55,40 @@ class Main {
             if (arr[i-1] > arr[i]) return false;
         return true;
     }
-
 }
 
 class Sort {
+    static void Quick(int[] arr, int lo, int hi) {
+        if (hi<=lo)
+            return;
+
+        int olo=lo,ohi=hi;
+        int piv = arr[lo];
+        while (lo<=hi) {
+            while (lo<=hi && arr[lo]<piv) 
+                lo++;
+            while (lo<=hi && arr[hi]>piv)
+                hi--;
+            if(lo>hi)
+                break;
+            else{
+                int tmp=arr[lo];
+                arr[lo]=arr[hi];
+                arr[hi]=tmp;
+                lo++;
+                hi--;
+            }
+        }
+        Quick(arr,olo,hi);
+        Quick(arr,lo,ohi);
+        return;
+    }
+
+    static int[] Quick(int[] arr) {
+        Quick(arr, 0, arr.length-1);
+        return arr;
+    }
+
     static int[] Shell(int[] arr, int[] intervals) {
         //check that the intervals are legal
         if (intervals[intervals.length-1]!=1) {
